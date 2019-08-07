@@ -3,7 +3,12 @@ var router = express.Router();
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
+    res.set({
+        // 'Content-Type': 'application/json;charset=UTF-8',
+        // 'Content-Length': '123',
+        // 'ETag': '12345'
+    });
+  res.send({userName: 'yuzhuang'});
 });
 
 module.exports = router;
