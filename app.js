@@ -47,14 +47,29 @@ var app = express();
 const WebSocket = require('ws');
 
 const wss = new WebSocket.Server({port: 4000});
+const clientContactNum = [];
 
 wss.on('connection', ws => {
     ws.on('message', message => {
-        console.log('received: %s', message);
+        let callbackMsg = JSON.parse(message);
+
         wss.clients.forEach(client => {
+            clientContactNum.push(client);
             // client !== ws 排除自己
             if (client.readyState === WebSocket.OPEN) {
-                client.send(message);
+                if (client !== ws || clientContactNum.length <= 1) {
+                    Object.assign(callbackMsg, {
+                        message: 'welcome new person ' + callbackMsg.userName,
+                        status: 'New'
+                    });
+                } else {
+                    Object.assign(callbackMsg, {
+                        message: callbackMsg.message,
+                        status: 'Old'
+                    });
+                }
+                console.log(callbackMsg, '--')
+                client.send(JSON.stringify(callbackMsg));
             }
         });
     });
