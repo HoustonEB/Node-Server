@@ -57,9 +57,9 @@ wss.on('connection', ws => {
             clientContactNum.push(client);
             // client !== ws 排除自己
             if (client.readyState === WebSocket.OPEN) {
-                if (client !== ws || clientContactNum.length <= 1) {
+                if (client !== ws) {
                     Object.assign(callbackMsg, {
-                        message: 'welcome new person ' + callbackMsg.userName,
+                        message:  'joined ' + callbackMsg.userName,
                         status: 'New'
                     });
                 } else {
