@@ -2,6 +2,8 @@
 * express.Router提供一个模块化的可安装化的router中间件*/
 var express = require('express');
 var router = express.Router();
+var multiparty = require('multiparty');
+var util = require('util');
 
 // 向这个路由添加一个日志中间件
 router.use(function timeLod(req, res, next) {
@@ -39,6 +41,7 @@ router.get('/getRole', function(req, res, next) {
 router.post('/getList', function(req, res, next) {
   // res.render('index', { title: 'Express' });
   // res.setHeader('access-control-allow-origin', '*')
+  console.log(req.body, 'getList请求数据')
   res.send(
     {
       data: {
@@ -58,6 +61,25 @@ router.post('/getTable', function(req, res, next) {
       },
       status: '3000',
       message: '错误接口'
+  }
+  );
+  res.end()
+});
+router.post('/upload', function(req, res, next) {
+  console.log(req.body, 'upload-body')
+  var form = new multiparty.Form();
+  form.parse(req, function(err, fields, files) {
+    res.writeHead(200, {'content-type': 'text/plain'});
+    res.write('received upload:\n\n');
+    res.end(util.inspect({fields: fields, files: files}));
+  });
+  res.send(
+    {
+      data: {
+          files: req.body
+      },
+      status: '200',
+      message: '上传成功'
   }
   );
   res.end()
