@@ -78,7 +78,7 @@ router.post('/upload', function(req, res, next) {
       data: {
           files: req.body
       },
-      status: '200',
+      status: '500',
       message: '上传成功'
   }
   );
